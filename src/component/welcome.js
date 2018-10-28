@@ -9,6 +9,7 @@ class Welcome extends React.Component {
           <Container fluid>
             <h1 className='display-3 text-primary'>Welcome to Website</h1>
             <p className='lead text-success'>Website builded for submit task to Slack</p>
+            <p className='lead text-success'><em>Create by JudasFate</em></p>
           </Container>
         </Jumbotron>
       </div>

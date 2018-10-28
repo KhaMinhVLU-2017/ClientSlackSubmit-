@@ -1,3 +1,3 @@
 export const api = {
-  url: 'https://www.judasfateblog.tk/slackserver'
+  url: 'https://www.judasfateblog.cf/slackserver'
 }

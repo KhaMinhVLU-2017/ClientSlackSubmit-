@@ -3,11 +3,13 @@ import { Table, Button, Badge } from 'reactstrap'
 import axios from 'axios'
 import { api } from '../config'
 import { connect } from 'react-redux'
+import loadimg from '../images/load.gif'
 
 class TabelStaff extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { taskL: [] }
+    this.state = { taskL: [], loaded: false, id_load: '' }
+    this.evenRmTask = this.evenRmTask.bind(this)
   }
   componentDidMount() {
     this.getTastList()
@@ -23,6 +25,21 @@ class TabelStaff extends React.Component {
         console.log(error)
       })
   }
+  evenRmTask(e) {
+    let id = e.target.id
+    let self = this
+    this.setState({ loaded: true, id_load: id })
+    axios.get(api.url + '/api/Task' + id)
+      .then((response) => {
+        if (response.status === 200) {
+          setTimeout(() => { self.setState({ loaded: false }); self.getTastList() }, 1000)
+        }
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
   render() {
     if (this.props.booltask) {
       this.getTastList()
@@ -33,7 +50,8 @@ class TabelStaff extends React.Component {
           <tr>
             <th>#</th>
             <th>Content</th>
-            <th>Datetime</th>
+            <th>Description</th>
+            <th>Done Time</th>
             <th>Status</th>
             <th>Edit</th>
           </tr>
@@ -45,11 +63,13 @@ class TabelStaff extends React.Component {
                 <td >{index + 1}</td>
                 <td>{item.content}</td>
                 <td>7:00AM every day except Sunday</td>
+                <td>{item.date === 'waiting' ? <Badge color='warning'>{item.date}</Badge> : item.date}</td>
                 <td>{item.status === 'Done' ?
-                  <Badge color='success'>Done</Badge> :
-                  <Badge color='primary'>Doing</Badge>
+                  <Badge color='success'>Done</Badge> : <Badge color='primary'>Doing</Badge>
                 }</td>
-                <td><Button color='danger'>X</Button></td>
+                <td>{item.status !== 'Done' ? <Button onClick={this.evenRmTask} id={item._id} color='danger'> X </Button> : ''}
+                  &ensp; {this.state.loaded && item._id === this.state.id_load && <img style={{ width: 40 }} alt='loaded' className='img-responsive' src={loadimg} />}
+                </td>
               </tr>
             ) : (<tr key='1'>
               <td >0</td>

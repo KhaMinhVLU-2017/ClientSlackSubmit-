@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Row, Col, Container, Form, Input, Label, FormGroup, Button } from 'reactstrap'
+import { Row, Col, Container, Form, Input, Label, FormGroup, Button, Alert } from 'reactstrap'
 import bg from '../images/bg-01.jpg'
 import axios from 'axios'
 import { api } from '../config'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const styleButton = {
     width: 100,
@@ -19,25 +19,31 @@ const styleHeader = {
 class Login extends Component {
     constructor(props) {
         super(props)
-        this.state = { email: '', password: '' }
+        this.state = { email: '', password: '', color: '', message: '' }
         this.onSubmitServer = this.onSubmitServer.bind(this)
         this.onHandlerChange = this.onHandlerChange.bind(this)
     }
     onSubmitServer(e) {
         e.preventDefault()
+        let self = this
         let email = this.state.email
         let password = this.state.password
-        axios.post(api.url + '/api/login', { email, password })
-            .then(response => {
-                if (response.data === 200 ){
-                    
-                }
-                console.log(response)
-            })
-            .catch(err => {
-                if (err) console.log(err)
-            })
+        if (email !== '' || password !== '') {
+            axios.post(api.url + '/api/login', { email, password })
+                .then(response => {
+                    if (response.data.status === 200) {
 
+                    } else {
+                        self.setState({ color: 'danger', message: response.data.message })
+                    }
+                    console.log(response)
+                })
+                .catch(err => {
+                    if (err) console.log(err)
+                })
+        } else {
+            this.setState({ color: 'danger', message: 'Please input field' })
+        }
     }
     onHandlerChange(e) {
         this.setState({
@@ -65,9 +71,10 @@ class Login extends Component {
                                 </Col>
                             </FormGroup>
                             <hr />
+                            <Alert color={this.state.color}>{this.state.message}</Alert>
                             <Button type='submit' id='btn_login' style={styleButton} >LOGIN</Button>
                         </Form>
-                        <Link to="/register"><p style={{float: 'right'}}>You are not account ?</p></Link>
+                        <Link to="/register"><p style={{ float: 'right' }}>You are not account ?</p></Link>
                     </Col>
                 </Row>
             </Container>

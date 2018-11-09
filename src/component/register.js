@@ -3,6 +3,7 @@ import { Row, Col, Container, Form, Input, Label, FormGroup, Button } from 'reac
 import bg from '../images/bg-01.jpg'
 import axios from 'axios'
 import { api } from '../config'
+import {Link} from 'react-router-dom'
 
 const styleButton = {
     width: 100,
@@ -52,7 +53,7 @@ class Register extends Component {
                     <img src={bg} style={{ width: '100vw', position: 'relative', height: '100vh', filter: 'brightness(50%)' }} alt='img' />
                     {this.state.check ?
                         <Col style={{ position: 'absolute', maxWidth: 450, textAlign: 'center', left: 0, right: 0, top: 0, bottom: 0, margin: '25vh auto' }} md={12} sm={12} xs={12}>
-                            <h3 style={styleHeader}>Please verify email...!</h3>
+                            <h3 style={styleHeader}>Please verify email and <Link to='/'>Login</Link></h3>
                         </Col>
                         :
                         <Col style={{ position: 'absolute', maxWidth: 450, textAlign: 'center', left: 0, right: 0, top: 0, bottom: 0, margin: '25vh auto' }} md={12} sm={12} xs={12}>

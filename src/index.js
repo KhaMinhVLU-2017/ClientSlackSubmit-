@@ -7,12 +7,14 @@ import { Provider } from 'react-redux'
 import store from './store'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Login from './component/login'
+import Register from './component/register'
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <div>
         <Route path='/' exact component={Login} />
+        <Route path='/register' exact component={Register} />
         <Route path='/home' component={App} />
       </div>
     </BrowserRouter>

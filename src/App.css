@@ -30,3 +30,12 @@
     transform: rotate(360deg);
   }
 }
+::placeholder {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: cursive;
+}
+#btn_login:hover {
+  background: gray !important;
+  transition: 1s !important;
+}

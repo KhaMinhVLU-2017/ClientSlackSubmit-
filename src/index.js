@@ -5,10 +5,17 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { Provider } from 'react-redux'
 import store from './store'
+import { BrowserRouter, Route } from 'react-router-dom'
+import Login from './component/login'
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <div>
+        <Route path='/' exact component={Login} />
+        <Route path='/home' component={App} />
+      </div>
+    </BrowserRouter>
   </Provider>
   , document.getElementById('root'))
 

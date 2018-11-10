@@ -4,6 +4,7 @@ import axios from 'axios'
 import { api } from '../config'
 import { connect } from 'react-redux'
 import loadimg from '../images/load.gif'
+import {withCookies} from 'react-cookie'
 
 class TabelStaff extends React.Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class TabelStaff extends React.Component {
     if (this.props.booltask) {
       this.getTastList()
     }
+    let _id = this.props.cookies.get('__id')
     return (
       <Table dark hover style={{ marginTop: '50px' }}>
         <thead>
@@ -67,7 +69,7 @@ class TabelStaff extends React.Component {
                 <td>{item.status === 'Done' ?
                   <Badge color='success'>Done</Badge> : <Badge color='primary'>Doing</Badge>
                 }</td>
-                <td>{item.status !== 'Done' ? <Button onClick={this.evenRmTask} id={item._id} color='danger'> X </Button> : ''}
+                <td>{item.status !== 'Done' ? _id === '5be540b812a54d29528611db' ? <Button onClick={this.evenRmTask} id={item._id} color='danger'> X </Button> : '' : ''}
                   &ensp; {this.state.loaded && item._id === this.state.id_load && <img style={{ width: 40 }} alt='loaded' className='img-responsive' src={loadimg} />}
                 </td>
               </tr>
@@ -89,4 +91,4 @@ const mapStatetoProps = state => ({
   booltask: state.task
 })
 
-export default connect(mapStatetoProps)(TabelStaff)
+export default connect(mapStatetoProps)(withCookies(TabelStaff))

@@ -72,7 +72,6 @@ class Modelhome extends React.Component {
     }
     let { cookies } = this.props
     let _id = cookies.get('__id')
-    console.log(cookies)
     return (
       <div>
         {_id === '5be540b812a54d29528611db' ? <Button color='info' onClick={this.toggle}>Add Task </Button> : <Button disabled> Add Task </Button>}

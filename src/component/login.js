@@ -6,6 +6,7 @@ import { api } from '../config'
 import { Link, Redirect } from 'react-router-dom'
 import jwt from 'jsonwebtoken'
 import { withCookies } from 'react-cookie'
+import loadIMG from '../images/loading.gif'
 
 const styleButton = {
   width: 100,
@@ -21,7 +22,7 @@ const styleHeader = {
 class Login extends Component {
   constructor(props) {
     super(props)
-    this.state = { email: '', password: '', color: '', message: '', login: false }
+    this.state = { email: '', password: '', color: '', message: '', login: false, stIMG: false, percent: 0 }
     this.onSubmitServer = this.onSubmitServer.bind(this)
     this.onHandlerChange = this.onHandlerChange.bind(this)
   }
@@ -31,8 +32,16 @@ class Login extends Component {
     let self = this
     let email = this.state.email
     let password = this.state.password
+    this.setState({stIMG: true})
     if (email !== '' || password !== '') {
-      axios.post(api.url + '/api/login', { email, password })
+      axios.post(api.url + '/api/login', { email, password },{
+        onUploadProgress: function (progressEvent) {
+          //console.log("upload :" , progressEvent)
+        },
+        onDownloadProgress: function (progressEvent) {
+          //console.log("download :" , progressEvent)
+        }
+      })
         .then(response => {
           if (response.data.status === 200) {
             let decode = jwt.verify(response.data.token, api.keyToken)
@@ -40,7 +49,7 @@ class Login extends Component {
             cookies.set('__email', decode.email, { path: '/' })
             cookies.set('__username', decode.username, { path: '/' })
             cookies.set('__id', decode._id, { path: '/' })
-            self.setState({ login: true })
+            self.setState({ login: true,stIMG: false })
           } else {
             self.setState({ color: 'danger', message: response.data.message })
           }
@@ -52,12 +61,12 @@ class Login extends Component {
       this.setState({ color: 'danger', message: 'Please input field' })
     }
   }
-  onHandlerChange (e) {
+  onHandlerChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     })
   }
-  render () {
+  render() {
     if (this.state.login) {
       return <Redirect to='/home' />
     }
@@ -82,7 +91,9 @@ class Login extends Component {
               </FormGroup>
               <hr />
               <Alert color={this.state.color}>{this.state.message}</Alert>
-              <Button type='submit' id='btn_login' style={styleButton} >LOGIN</Button>
+              {this.state.stIMG ? <span><img alt="loading MEO" src={loadIMG} style={{ width: 50 }} /></span> :
+                <Button type='submit' id='btn_login' style={styleButton} >LOGIN</Button>
+              }
             </Form>
             <Link to='/register'><p style={{ float: 'right' }}>Are you not account ?</p></Link>
           </Col>

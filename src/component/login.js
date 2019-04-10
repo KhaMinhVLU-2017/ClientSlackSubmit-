@@ -51,14 +51,14 @@ class Login extends Component {
             cookies.set('__id', decode._id, { path: '/' })
             self.setState({ login: true,stIMG: false })
           } else {
-            self.setState({ color: 'danger', message: response.data.message })
+            self.setState({ color: 'danger', message: response.data.message,stIMG: false  })
           }
         })
         .catch(err => {
           if (err) console.log(err)
         })
     } else {
-      this.setState({ color: 'danger', message: 'Please input field' })
+      this.setState({ color: 'danger', message: 'Please input field', stIMG: false })
     }
   }
   onHandlerChange(e) {
